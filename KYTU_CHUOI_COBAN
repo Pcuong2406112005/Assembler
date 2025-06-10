@@ -1,0 +1,66 @@
+.model small
+.stack 100h
+.data
+   mg db 'Hello World$'
+   nw db 0DH,0AH,'$'
+   buffer db 20,?,20 dup('$')
+.code
+MAIN PROC
+    MOV AX,@data
+    MOV DS,AX
+    
+    ;nhap vao 1 ky tu
+    MOV AH,01h
+    INT 21H
+    MOV BL,AL
+    
+    ;in ra ky tu xuong dong
+    MOV AH,09H
+    LEA DX,nw
+    INT 21H
+    
+    ;in ra ky tu vua nhap
+    MOV DL,BL
+    MOV AH,02h
+    INT 21H
+    
+    ;in ra ky tu xuong dong
+    MOV AH,09H
+    LEA DX,nw
+    INT 21H
+    
+    ;in ra mg//hello world
+    MOV AH,09h
+    LEA DX,mg
+    INT 21H
+    
+    ;in ra ky tu xuong dong
+    MOV AH,09H
+    LEA DX,nw
+    INT 21H 
+    
+    ;nhap 1 chuoi tu ban phim
+    MOV AH,0AH
+    LEA DX,BUFFER
+    INT 21H
+    
+    ;in ra ky tu xuong dong
+    MOV AH,09H
+    LEA DX,nw
+    INT 21H
+    
+    ;si la con tro,can tro vao dau bo nho luu chuoi
+    ;cl la so lan lap
+    ;ch la bit cao cua cl
+    lea si,buffer+2
+    mov cl,buffer+1
+    mov ch,0
+    
+print_loop:
+    mov dl,[si]
+    mov ah,02h
+    int 21h
+    inc si
+    loop print_loop    
+    
+END MAIN
