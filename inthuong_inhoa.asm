@@ -30,12 +30,23 @@ main proc
     mov ch,0
     
 print_loop:
-    sub [si],32
-    mov dl,[si]
+    mov al,[si]
+    
+    cmp al,'a'
+    jb inra
+    
+    cmp al,'z'
+    ja inra
+    
+    sub al,32
+    
+inra:
     mov ah,02h
+    mov dl,al
     int 21h
+    
     inc si
-    loop print_loop    
+    loop print_loop        
     
     mov ah,4ch
     int 21h
